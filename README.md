@@ -83,6 +83,64 @@ By focusing on **linked lists** (for dynamic insertion/deletion) and **recursion
   - Remove any debugging prints or stale branches.  
   - Ensure your `.gitignore` is updated to exclude unnecessary files.
 
+## How to Run
+
+### Requirements
+- Python 3.8+
+- `pytest` (optional, for running tests): `pip install pytest`
+
+### Run the demo
+From the project root:
+
+```bash
+python3 main.py
+```
+
+Expected output:
+
+```
+Employee ID roster:
+101 -> 102 -> 103 -> 104 -> 105 -> None
+
+Sum of all IDs: 515
+
+Search for ID 103: found
+Search for ID 999: not found
+
+Roster after in-place reverse:
+105 -> 104 -> 103 -> 102 -> 101 -> None
+```
+
+**Interpreting the results**
+- The roster line shows each node's ID from `head` to the end; `None` marks the end of the list.
+- **Sum** is the total of every ID, computed recursively (`0` for an empty list).
+- **Search** reports whether an ID exists in the list.
+- **Reverse** re-points every node's `next` in-place, so the same nodes now appear in the opposite order.
+
+### Run the tests
+From the project root:
+
+```bash
+python3 -m pytest
+```
+
+or with the standard library only:
+
+```bash
+python3 -m unittest discover -s tests -t .
+```
+
+### Implementation notes
+| Method | Approach | Complexity |
+|---|---|---|
+| `insert_at_front(data)` | New node points at old head | O(1) |
+| `insert_at_end(data)` | Walk to tail, attach new node | O(n) |
+| `recursive_sum()` | Base: `None` → `0`; else `data + sum(next)` | O(n) |
+| `recursive_reverse()` | Base: `None` → return `prev` as new head; else flip `next` and recurse | O(n) |
+| `recursive_search(target)` | Base: `None` → `False`, match → `True`; else recurse on `next` | O(n) |
+
+Recursion fits naturally here because a linked list is a recursive structure: either empty, or a node followed by a smaller list. Python's default recursion limit (~1000) makes these methods best suited to small and medium lists.
+
 ## Submission
 Once the lab is complete, all tests are passing, and you've pushed the completed code to 
 your forked repo on GitHub, submit your GitHub repo through Canvas using CodeGrade.
